@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Artistes</title>
+</head>
+<body>
+  <h1>Mes artistes</h1>
+  <ul id="liste"></ul>
+
+  <script>
+    async function chargerArtistes() {
+      const reponse = await fetch("/artists");
+      const artistes = await reponse.json();
+
+      const liste = document.getElementById("liste");
+      liste.innerHTML = "";
+
+      for (const artiste of artistes) {
+        const li = document.createElement("li");
+        li.textContent = artiste.name + " (" + artiste.genre + ")";
+        liste.appendChild(li);
+      }
+    }
+
+    chargerArtistes();
+
+        document.getElementById("formulaire").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const nom = document.getElementById("nom").value;
+      const genre = document.getElementById("genre").value;
+
+      const reponse = await fetch("/artists", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: nom, genre: genre })
+      });
+
+      if (!reponse.ok) {
+        alert("Erreur : l'artiste n'a pas été ajouté");
+        return;
+      }
+
+      document.getElementById("formulaire").reset();
+      chargerArtistes();
+    });
+  </script>
+</body>
+</html>
