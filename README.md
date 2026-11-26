@@ -19,10 +19,16 @@ Au premier lancement, la base `artists.db` est créée avec 3 artistes.
 | GET | /health | état du serveur |
 | GET | /artists | liste des artistes |
 | GET | /artists/:id | un artiste |
+| GET |	/artists/:id/concerts les concerts d'un artiste|
 | POST | /artists | créer un artiste |
 | PUT | /artists/:id | remplacer un artiste |
 | PATCH | /artists/:id | modifier certains champs |
 | DELETE | /artists/:id | supprimer un artiste |
+| GET |	/concerts	liste des concerts
+| GET |	/concerts/:id	un concert
+| POST | /concerts	créer un concert
+| PATCH |	/concerts/:id	modifier un concert
+| DELETE |	/concerts/:id	supprimer un concert
 
 ## Exemple
 
