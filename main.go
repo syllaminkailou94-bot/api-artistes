@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+
 	database.Connect()
 
 	app := fiber.New()
@@ -17,18 +18,19 @@ func main() {
 	app.Get("/health", handlers.HealthHandler)
 
 	app.Get("/artists", handlers.GetArtistsHandler)
+
 	app.Get("/artists/:id", handlers.GetArtistByIDHandler)
+	app.Get("/artists/:id/concerts", handlers.GetArtistConcertsHandler)
 	app.Post("/artists", handlers.CreateArtistHandler)
 	app.Put("/artists/:id", handlers.UpdateArtistHandler)
 	app.Patch("/artists/:id", handlers.PatchArtistHandler)
 	app.Delete("/artists/:id", handlers.DeleteArtistHandler)
 
 	app.Get("/concerts", handlers.GetConcertsHandler)
-	app.Post("/concerts", handlers.CreateConcertHandler)
-	app.Get("/artists/:id/concerts", handlers.GetArtistConcertsHandler)
 	app.Get("/concerts/:id", handlers.GetConcertByIDHandler)
-	app.Delete("/concerts/:id", handlers.DeleteConcertHandler)
+	app.Post("/concerts", handlers.CreateConcertHandler)
 	app.Patch("/concerts/:id", handlers.PatchConcertHandler)
+	app.Delete("/concerts/:id", handlers.DeleteConcertHandler)
 
 	log.Fatal(app.Listen(":3001"))
 }
