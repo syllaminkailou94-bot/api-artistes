@@ -7,7 +7,6 @@ import (
 	"api-artistes/handlers"
 
 	"github.com/gofiber/fiber/v3"
-	"github.com/gofiber/fiber/v3/middleware/static"
 )
 
 func main() {
@@ -21,9 +20,15 @@ func main() {
 	app.Get("/artists/:id", handlers.GetArtistByIDHandler)
 	app.Post("/artists", handlers.CreateArtistHandler)
 	app.Put("/artists/:id", handlers.UpdateArtistHandler)
-	app.Delete("/artists/:id", handlers.DeleteArtistHandler)
-	app.Use("/", static.New("./public"))
 	app.Patch("/artists/:id", handlers.PatchArtistHandler)
+	app.Delete("/artists/:id", handlers.DeleteArtistHandler)
+
+	app.Get("/concerts", handlers.GetConcertsHandler)
+	app.Post("/concerts", handlers.CreateConcertHandler)
+	app.Get("/artists/:id/concerts", handlers.GetArtistConcertsHandler)
+	app.Get("/concerts/:id", handlers.GetConcertByIDHandler)
+	app.Delete("/concerts/:id", handlers.DeleteConcertHandler)
+	app.Patch("/concerts/:id", handlers.PatchConcertHandler)
 
 	log.Fatal(app.Listen(":3001"))
 }

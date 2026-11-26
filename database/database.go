@@ -19,7 +19,7 @@ func Connect() {
 		log.Fatal("Impossible d'ouvrir la base :", err)
 	}
 
-	if err := DB.AutoMigrate(&models.Artist{}); err != nil {
+	if err := DB.AutoMigrate(&models.Artist{}, &models.Concert{}); err != nil {
 		log.Fatal("Erreur de migration :", err)
 	}
 
