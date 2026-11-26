@@ -97,17 +97,25 @@ func DeleteArtistHandler(c fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid artist ID"})
 	}
 
-	result := database.DB.Delete(&models.Artist{}, id)
-	if result.Error != nil {
+	var artist models.Artist
+	if err := database.DB.First(&artist, id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Status(404).JSON(fiber.Map{"error": "Artist not found"})
+		}
 		return c.Status(500).JSON(fiber.Map{"error": "Database error"})
 	}
 
-	if result.RowsAffected == 0 {
-		return c.Status(404).JSON(fiber.Map{"error": "Artist not found"})
+	if err := database.DB.Where("artist_id = ?", id).Delete(&models.Concert{}).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Database error"})
+	}
+
+	if err := database.DB.Delete(&artist).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Database error"})
 	}
 
 	return c.SendStatus(204)
 }
+
 func PatchArtistHandler(c fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
